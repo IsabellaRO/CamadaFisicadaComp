@@ -17,7 +17,7 @@ import time
 #serialName = "/dev/ttyACM0"           # Ubuntu (variacao de)
 #serialName = "/dev/tty.usbmodem1411" # Mac    (variacao de)
 #serialName = "COM3"                  # Windows(variacao de)
-serialName = "COM3"
+serialName = "COM3"  
 
 def main():
     # Inicializa enlace
@@ -27,7 +27,10 @@ def main():
     com.enable()
 
     # Endereco da imagem a ser transmitida
-    imageR = "./imgs/imageC.png"
+    imageR = "./imgs/imageD.png"
+
+    # Endereco da imagem a ser salva
+    imageW = "./imgs/recebida.png"
 
     # Log
     print("-------------------------")
@@ -40,7 +43,7 @@ def main():
     print (" - {}".format(imageR))
     print("-------------------------")
     txBuffer = open(imageR, 'rb').read()
-    txLen    = 3093
+    txLen    = len(txBuffer)
     print(txLen)
 
     # Transmite imagem
@@ -50,6 +53,27 @@ def main():
     # espera o fim da transmissão
     while(com.tx.getIsBussy()):
         pass
+
+    # Atualiza dados da transmissão
+    txSize = com.tx.getStatus()
+    print ("Transmitido       {} bytes ".format(txSize))
+
+    # Faz a recepção dos dados
+    print ("Recebendo dados .... ")
+    rxBuffer, nRx = com.getData(txLen)
+
+    # log
+    print ("Lido              {} bytes ".format(nRx))
+
+    # Salva imagem recebida em arquivo
+    print("-------------------------")
+    print ("Salvando dados no arquivo :")
+    print (" - {}".format(imageW))
+    f = open(imageW, 'wb')
+    f.write(rxBuffer)
+
+    # Fecha arquivo de imagem
+    f.close()
 
     # Encerra comunicação
     print("-------------------------")
