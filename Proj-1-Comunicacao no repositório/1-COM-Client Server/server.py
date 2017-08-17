@@ -37,18 +37,18 @@ def main():
     print("  porta : {}".format(com.fisica.name))
     print("-------------------------")
 
-    txLen = 3093
+    #txLen = 3093
 
     # Faz a recepção dos dados
     print ("Recebendo dados .... ")
     #rxBuffer, nRx = com.getData(txLen)
-    temp1,nRx = com.getData(1)
+    temp1,tx = com.getData(1)
     inicio=time.time()
-    temp2, tx = com.getData(3092)
+    temp2, nRx = com.getData(3092)
 
-    rxBuffer, nRx = temp1 + temp2
+    rxBuffer = temp1 + temp2
 
-    fim=tim.time()
+    fim=time.time()
     # log
     print ("Lido              {} bytes ".format(nRx))
 
