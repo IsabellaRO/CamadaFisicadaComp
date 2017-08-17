@@ -28,7 +28,6 @@ def main():
 
     # Endereco da imagem a ser transmitida
     imageR = "./imgs/imageC.png"
-    inicio = time.time()
 
     # Log
     print("-------------------------")
@@ -46,7 +45,7 @@ def main():
 
     # Transmite imagem
     print("Transmitindo .... {} bytes".format(txLen))
-    transm = time.time()
+    inicio = time.time()
     com.sendData(txBuffer)
 
     # espera o fim da transmissão
@@ -59,8 +58,7 @@ def main():
     print("-------------------------")
     com.disable()
     fim = time.time()
-    print("Tempo de transmissão: " + str(transm - inicio))
-    print("Tempo de recepção: " + str(fim - transm))
+    print("Tempo de transmissão: " + str(fim - inicio))
 
 if __name__ == "__main__":
     main()
