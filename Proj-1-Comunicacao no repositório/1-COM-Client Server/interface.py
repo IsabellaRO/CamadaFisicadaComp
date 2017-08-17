@@ -9,7 +9,7 @@ class Janela_Principal():
     def __init__(self):
 
         self.window = tk.Tk()
-        self.window.geometry("210x200+100+100")
+        self.window.geometry("210x200")
         self.window.configure(background = 'white')
         self.window.resizable(False, False)
 

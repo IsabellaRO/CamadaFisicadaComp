@@ -41,8 +41,14 @@ def main():
 
     # Faz a recepção dos dados
     print ("Recebendo dados .... ")
-    rxBuffer, nRx = com.getData(txLen)
+    #rxBuffer, nRx = com.getData(txLen)
+    temp1,nRx = com.getData(1)
+    inicio=time.time()
+    temp2, tx = com.getData(3092)
 
+    rxBuffer, nRx = temp1 + temp2
+
+    fim=tim.time()
     # log
     print ("Lido              {} bytes ".format(nRx))
 
@@ -52,6 +58,9 @@ def main():
     print (" - {}".format(imageW))
     f = open(imageW, 'wb')
     f.write(rxBuffer)
+
+
+    print("Tempo de recepção: {}".format(fim - inicio))
 
     # Fecha arquivo de imagem
     f.close()
