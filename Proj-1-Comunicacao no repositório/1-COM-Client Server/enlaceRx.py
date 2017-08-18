@@ -18,13 +18,13 @@ class RX(object):
     """ This class implements methods to handle the reception
         data over the p2p fox protocol
     """
-    
+
     def __init__(self, fisica):
         """ Initializes the TX class
         """
         self.fisica      = fisica
         self.buffer      = bytes(bytearray())
-        self.threadStop  = False
+        self.thre   adStop  = False
         self.threadMutex = True
         self.READLEN     = 1024
 
@@ -36,6 +36,7 @@ class RX(object):
                 rxTemp, nRx = self.fisica.read(self.READLEN)
                 if (nRx > 0):
                     self.buffer += rxTemp
+                print(self.buffer)
                 time.sleep(0.001)
 
     def threadStart(self):
@@ -107,5 +108,3 @@ class RX(object):
         """ Clear the reception buffer
         """
         self.buffer = b""
-
-
