@@ -8,7 +8,6 @@ class Empacota(object):
         self.headSTART = 0xFF
         self.headStruct = Struct("start" / Int8ub,"size" / Int16ub)
         self.eopSTART = 0xFFFCF4F7
-        self.eopStruct = Struct("start" / Int32ub)
 
     def buildHead(self):
         head = self.headStruct.build(dict(start = self.headSTART, size = self.dataLen))
@@ -21,11 +20,15 @@ class Empacota(object):
     def buildPackage(self):
         package = self.buildHead()
         package += self.data
-        package += self.buildEOP()
+        package += self.eopSTART()
         return package
 
-elements=[10,5,0,5,10,10,5,0]
+#elements=[10,5,0,5,10,10,5,0]
 
-values= bytearray(elements)
+#values= bytearray(elements)
 
-print(Empacota(values).buildPackage())
+#print(Empacota(values).buildPackage())
+    def desempacota(package):
+    head = package[0:3]
+    data = package[3:-4]
+    return (head,data)
