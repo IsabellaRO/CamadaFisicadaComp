@@ -1,6 +1,8 @@
+import matplotlib
+matplotlib.use('TkAgg')
 
-from tkinter import *
-import tkinter as tk
+from Tkinter import *
+import Tkinter as tk
 import server
 import client
 

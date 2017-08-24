@@ -24,7 +24,7 @@ class RX(object):
         """
         self.fisica      = fisica
         self.buffer      = bytes(bytearray())
-        self.thre   adStop  = False
+        self.threadStop  = False
         self.threadMutex = True
         self.READLEN     = 1024
         self.pay       =False
