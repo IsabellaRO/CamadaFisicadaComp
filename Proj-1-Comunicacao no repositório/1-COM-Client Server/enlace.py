@@ -19,6 +19,7 @@ from interfaceFisica import fisica
 # enlace Tx e Rx
 from enlaceRx import RX
 from enlaceTx import TX
+from empacota import *
 
 class enlace(object):
     """ This class implements methods to the interface between Enlace and Application
@@ -53,11 +54,14 @@ class enlace(object):
     def sendData(self, data):
         """ Send data over the enlace interface
         """
-        self.tx.sendBuffer(data)
+        package = Package(data).buildPackage()
+        self.tx.sendBuffer(package)
 
-    def getData(self, size):
+    def getData(self):
         """ Get n data over the enlace interface
         Return the byte array and the size of the buffer
         """
-        data = self.rx.getNData(size)
-        return(data, len(data))
+        package = self.rx.getHeadPayload()
+        data = undoPackage(package)
+
+        return(data[0], data[1],(len(data[0])))
