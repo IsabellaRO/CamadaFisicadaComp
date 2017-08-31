@@ -33,6 +33,7 @@ class enlace(object):
         self.tx          = TX(self.fisica)
         self.connected   = False
 
+
     def enable(self):
         """ Enable reception and transmission
         """
@@ -51,6 +52,7 @@ class enlace(object):
     ################################
     # Application  interface       #
     ################################
+
     def sendData(self, data):
         """ Send data over the enlace interface
         """
@@ -116,3 +118,14 @@ class enlace(object):
                     return True
             else:
                 return False                    
+
+    def verifyPackage(self, data):
+        package = Package(data).buildPackage()
+        sizePack = len(package)
+        expected = len(self.getData())
+        if sizePack == expected:
+            self.sendACK()
+            return True
+        else:
+            self.sendNack()
+            return False
