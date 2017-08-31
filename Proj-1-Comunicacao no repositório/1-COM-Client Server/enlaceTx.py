@@ -12,7 +12,7 @@ import time
 
 # Threads
 import threading
-from empacota import *
+from empacota import Empacota
 
 # Class
 class TX(object):

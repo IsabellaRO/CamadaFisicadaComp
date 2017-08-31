@@ -56,7 +56,7 @@ class enlace(object):
     def sendData(self, data):
         """ Send data over the enlace interface
         """
-        package = Package(data).buildPackage()
+        package = Empacota(data, "data").buildPackage()
         self.tx.sendBuffer(package)
 
     def getData(self):
@@ -70,29 +70,31 @@ class enlace(object):
 
     def sendAck(self):
         #Envia os ACKs para autorizar inicio da conexão ou confirmar recebimentoss
-        package = Package(None, "ACK").buildPackage()
+        package = Empacota(None, "ACK").buildPackage()
         self.tx.sendBuffer(package)
 
-    def SendNack(self):
+    def sendNack(self):
         #Avisa que pacote chegou corrompido
-        package = Package(None, "NACK").buildPackage()
+        package = Empacota(None, "NACK").buildPackage()
         self.tx.sendBuffer(package)
 
-    def SendSync(self):
+    def sendSync(self):
         #Para estabelecer conexão
-        package = Package(None, "sync").buildPackage()
-        self.tx.SendBuffer(package)
+        package = Empacota(None, "sync").buildPackage()
+        self.tx.sendBuffer(package)
 
     def waitConnection(self): #Papel do Server
+        print("connected", connected)
         #Fica conferindo recebimento do sync e se recebe, confirma enviando ack. Depois envia o sync e confirma se recebeu ack de confirmação.
         while self.connected ==  False:
             response = self.getData()
+            print("response", response)
             print("Waiting sync...")
             if response[3] == "sync":
                 print("Sync received")
                 self.sendSync()
                 time.sleep(0.5)
-                self.sendACK()
+                self.sendAck()
                 print("ACK SENT")
                 response = self.getData()
                 if response[3] == "ACK":
@@ -114,7 +116,7 @@ class enlace(object):
                 if response[3] == "sync" or "ACK":
                     print("ACK received")
                     time.sleep(0.5)
-                    self.sendACK()
+                    self.sendAck()
                     return True
             else:
                 return False                    
@@ -124,7 +126,7 @@ class enlace(object):
         sizePack = len(package)
         expected = len(self.getData())
         if sizePack == expected:
-            self.sendACK()
+            self.sendAck()
             return True
         else:
             self.sendNack()

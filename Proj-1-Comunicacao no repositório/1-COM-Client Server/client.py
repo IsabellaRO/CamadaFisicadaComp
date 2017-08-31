@@ -20,7 +20,7 @@ serialName = "/dev/ttyACM0"           # Ubuntu (variacao de)
 #serialName = "COM3"                  # Windows(variacao de)
 #serialName = "COM3"
 
-def main(imageR, serialName):
+def main():
     # Inicializa enlace
     com = enlace(serialName)
 
@@ -28,7 +28,7 @@ def main(imageR, serialName):
     com.enable()
 
     # Endereco da imagem a ser transmitida
-    imageR = "./imgs/imageC.png"
+    imageR = "./imgs/imageB.png"
 
     # Log
     print("-------------------------")
@@ -37,29 +37,27 @@ def main(imageR, serialName):
     print("-------------------------")
 
     # Carrega imagem
-    print ("Carregando imagem para transmissão :")
-    print (" - {}".format(imageR))
-    print("-------------------------")
-    txBuffer = open(imageR, 'rb').read()
-    txLen    = (len(txBuffer))
-    print(txLen)
+    if com.establishConnection():
+        print ("Carregando imagem para transmissão :")
+        print (" - {}".format(imageR))
+        print("-------------------------")
+        txBuffer = open(imageR, 'rb').read()
+        txLen    = (len(txBuffer))
+        print(txLen)
 
-    # Transmite imagem
-    print("Transmitindo .... {} bytes".format(txLen))
-    inicio = time.time()
-    com.sendData(txBuffer)
+        # Transmite imagem
+        print("Transmitindo .... {} bytes".format(txLen))
+        inicio = time.time()
+        com.sendData(txBuffer)
 
-    # espera o fim da transmissão
-    while(com.tx.getIsBussy()):
-        pass
+        # espera o fim da transmissão
+        while(com.tx.getIsBussy()):
+            pass
 
-    # Encerra comunicação
-    com.disable()
-    fim = time.time()
-    print("-------------------------")
-    print("Comunicação encerrada")
-    print("-------------------------")
-    print("Tempo de transmissão: " + str(fim - inicio))
-    
-if __name__ == "__main__":
-    main()
+            # Encerra comunicação
+        com.disable()
+        fim = time.time()
+        print("-------------------------")
+        print("Comunicação encerrada")
+        print("-------------------------")
+        print("Tempo de transmissão: " + str(fim - inicio))

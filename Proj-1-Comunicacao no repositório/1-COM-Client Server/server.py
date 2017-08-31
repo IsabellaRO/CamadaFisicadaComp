@@ -14,7 +14,7 @@ import time
 #   para saber a sua porta, execute no terminal :
 #   python -m serial.tools.list_ports
 
-serialName = "/dev/ttyACM0"           # Ubuntu (variacao de)
+serialName = "/dev/ttyACM2"           # Ubuntu (variacao de)
 #serialName = "/dev/tty.usbmodem1411" # Mac    (variacao de)
 #serialName = "COM3"                   # Windows(variacao de)
 
@@ -51,6 +51,7 @@ def main():
     #rxBuffer, nRx = com.getData(txLen)
     #temp1,tx = com.getData(1)
     if com.waitConnection():
+        print("ola")
         time.sleep(0.5)
         response = com.getData()
         rxBuffer, nRx, real_nRx, package_type = response
@@ -58,10 +59,11 @@ def main():
         inicio=time.time()
        
         #temp2, nRx = com.getData(3092)
-
-        lost = nRx-real_nRx
-
         fim=time.time()
+        lost_bytes = nRx-real_nRx
+        if lost_bytes !=0:
+            com.sendNACK()
+        
         # log
         print ("Lido              {} bytes ".format(nRx))
         print ("Perdidos            {} bytes ".format(lost))
@@ -89,6 +91,4 @@ def main():
     else:
         return "Error"
         f.close()
-
-if __name__ == "__main__":
-    main()
+        com.disable()

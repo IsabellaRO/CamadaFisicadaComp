@@ -49,10 +49,8 @@ class Empacota(object):
 
 #print(Empacota(values).buildPackage())
     def desempacota(package):
-    #Desempacota e confere o tipo, retorna payload, tamanho e tipo (se é payload ou comando).
-        head = package[0:3]
+    #Desempacota e confere o tipo, retorna payload, tamanho e tipo (se e payload ou comando).
         size = int(binascii.hexlify(package[1:3]), 16) 
-        data = package[4:] #Head, size e type sao primeiro, data vem a partir do 4
         type_package = package[3:4]
 
         if type_package == b'\x00':
@@ -63,5 +61,5 @@ class Empacota(object):
             type_package = "ACK"
         elif type_package == b'\x11':
             type_package = "NACK"
-        
-        return (data, size, type_package)
+        payload=package[4:]
+        return (payload, size, type_package)

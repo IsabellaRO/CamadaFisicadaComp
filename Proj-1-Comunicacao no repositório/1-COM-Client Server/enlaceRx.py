@@ -119,8 +119,8 @@ class RX(object):
             eop = self.buffer.find(b'\xFF\xFC\xF4\xF7')
             if (eop != -1):
                 self.threadPause()
-                self.pay = True
+                headpayload = self.buffer[:eop]
                 self.buffer = self.buffer[eop+4:]
                 print(self.buffer)
                 self.threadResume()
-                return self.buffer[:eop]
+                return headpayload
