@@ -9,6 +9,7 @@
 
 from enlace import *
 import time
+import timeit
 
 # Serial Com Port
 #   para saber a sua porta, execute no terminal :
@@ -19,7 +20,7 @@ serialName = "/dev/ttyACM0"           # Ubuntu (variacao de)
 #serialName = "COM3"                  # Windows(variacao de)
 #serialName = "COM3"
 
-def main():
+def main(imageR, serialName):
     # Inicializa enlace
     com = enlace(serialName)
 
@@ -40,7 +41,7 @@ def main():
     print (" - {}".format(imageR))
     print("-------------------------")
     txBuffer = open(imageR, 'rb').read()
-    txLen    = 3093
+    txLen    = (len(txBuffer))
     print(txLen)
 
     # Transmite imagem
@@ -53,12 +54,12 @@ def main():
         pass
 
     # Encerra comunicação
+    com.disable()
+    fim = time.time()
     print("-------------------------")
     print("Comunicação encerrada")
     print("-------------------------")
-    com.disable()
-    fim = time.time()
     print("Tempo de transmissão: " + str(fim - inicio))
-
+    
 if __name__ == "__main__":
     main()

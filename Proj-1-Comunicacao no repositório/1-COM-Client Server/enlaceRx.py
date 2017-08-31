@@ -13,6 +13,8 @@ import time
 # Threads
 import threading
 
+import binascii
+
 # Class
 class RX(object):
     """ This class implements methods to handle the reception
@@ -20,14 +22,14 @@ class RX(object):
     """
 
     def __init__(self, fisica):
-        """ Initializes the TX class
+        """ Initializes the RX class
         """
         self.fisica      = fisica
         self.buffer      = bytes(bytearray())
         self.threadStop  = False
         self.threadMutex = True
         self.READLEN     = 1024
-        self.found       =False
+        self.pay       =False
 
     def thread(self):
         """ RX thread, to send data in parallel with the code
@@ -112,8 +114,13 @@ class RX(object):
     
     
     def getHeadPayload(self):
+        # Procura o EOP no final e retorna tudo antes dele.
         while(self.pay ==  False):
             eop = self.buffer.find(b'\xFF\xFC\xF4\xF7')
             if (eop != -1):
-                self.found = True
+                self.threadPause()
+                self.pay = True
+                self.buffer = self.buffer[eop+4:]
+                print(self.buffer)
+                self.threadResume()
                 return self.buffer[:eop]

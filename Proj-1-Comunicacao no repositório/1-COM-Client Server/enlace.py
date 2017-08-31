@@ -62,6 +62,57 @@ class enlace(object):
         Return the byte array and the size of the buffer
         """
         package = self.rx.getHeadPayload()
-        data = undoPackage(package)
+        data = desempacota(package)
 
-        return(data[0], data[1],(len(data[0])))
+        return(data[0], data[1],(len(data[0])), data[2])
+
+    def sendAck(self):
+        #Envia os ACKs para autorizar inicio da conexão ou confirmar recebimentoss
+        package = Package(None, "ACK").buildPackage()
+        self.tx.sendBuffer(package)
+
+    def SendNack(self):
+        #Avisa que pacote chegou corrompido
+        package = Package(None, "NACK").buildPackage()
+        self.tx.sendBuffer(package)
+
+    def SendSync(self):
+        #Para estabelecer conexão
+        package = Package(None, "sync").buildPackage()
+        self.tx.SendBuffer(package)
+
+    def waitConnection(self): #Papel do Server
+        #Fica conferindo recebimento do sync e se recebe, confirma enviando ack. Depois envia o sync e confirma se recebeu ack de confirmação.
+        while self.connected ==  False:
+            response = self.getData()
+            print("Waiting sync...")
+            if response[3] == "sync":
+                print("Sync received")
+                self.sendSync()
+                time.sleep(0.5)
+                self.sendACK()
+                print("ACK SENT")
+                response = self.getData()
+                if response[3] == "ACK":
+                    print("Ready to receive package")
+                    return True
+            else:
+                return False
+
+        
+    def establishConnection(self): #Papel do Client
+        #Envia o Sync para iniciar e pega a resposta. Se tiver Ack (confirmação de recebimento sync), procura pelo recebimento de sync e envia ack. 
+        while self.connected ==  False:
+            self.sendSync()
+            response = self.getData()
+            print("Waiting sync...")
+            if response[3] == "ACK" or "sync":
+                print("Sync received")
+                response = self.getData()
+                if response[3] == "sync" or "ACK":
+                    print("ACK received")
+                    time.sleep(0.5)
+                    self.sendACK()
+                    return True
+            else:
+                return False                    
