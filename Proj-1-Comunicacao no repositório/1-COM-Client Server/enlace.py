@@ -84,11 +84,11 @@ class enlace(object):
         self.tx.sendBuffer(package)
 
     def waitConnection(self): #Papel do Server
-        print("connected", connected)
+        #print("connected", connected)
         #Fica conferindo recebimento do sync e se recebe, confirma enviando ack. Depois envia o sync e confirma se recebeu ack de confirmação.
         while self.connected ==  False:
+            print("Loop waitconnection")
             response = self.getData()
-            print("response", response)
             print("Waiting sync...")
             if response[3] == "sync":
                 print("Sync received")

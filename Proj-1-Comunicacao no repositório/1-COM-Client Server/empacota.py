@@ -48,18 +48,20 @@ class Empacota(object):
 #values= bytearray(elements)
 
 #print(Empacota(values).buildPackage())
-    def desempacota(package):
+def desempacota(package):
     #Desempacota e confere o tipo, retorna payload, tamanho e tipo (se e payload ou comando).
-        size = int(binascii.hexlify(package[1:3]), 16) 
-        type_package = package[3:4]
+    size = int(binascii.hexlify(package[1:3]), 16) 
+    print(size)
+    type_package = package[3:4]
+    print(type_package)
 
-        if type_package == b'\x00':
-            type_package = "data"
-        elif type_package == b'\x10':
-            type_package = "sync"
-        elif type_package == b'\x11':
-            type_package = "ACK"
-        elif type_package == b'\x11':
-            type_package = "NACK"
-        payload=package[4:]
-        return (payload, size, type_package)
+    if type_package == b'\x00':
+        type_package = "data"
+    elif type_package == b'\x10':
+        type_package = "sync"
+    elif type_package == b'\x11':
+        type_package = "ACK"
+    elif type_package == b'\x11':
+        type_package = "NACK"
+    payload=package[4:]
+    return (payload, size, type_package)
