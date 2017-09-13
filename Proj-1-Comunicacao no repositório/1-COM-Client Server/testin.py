@@ -2,10 +2,7 @@
 #Inicializar quantidade de pacotes necessário
 self.max = 2048
 self.headSTART = 0xFF
-self.total = (self.dataLen//self.max) 
-
-if self.dataLen % self.max != 0:
-	self.total +=1 #Caso a divisão não de exata, um pacote a mais para os bits que sobraram
+self.total = ((self.dataLen//self.max)+1) 
 
 self.headStruct = Struct("start" / Int8ub, "size"  / Int16ub, "type" / Int8ub, "total" / Int8ub, "atual"/ Int8ub, "max" / Int8ub,)
 self.eopSTART = bytearray([0xFF, 0xFC, 0xF4, 0xF7])
@@ -53,3 +50,4 @@ return (Pacotes)
 
 
 	#função sendAtual
+	

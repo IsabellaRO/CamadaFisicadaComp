@@ -134,9 +134,7 @@ class enlace(object):
 
     def numberofPackets(self, size)
     	#Inicializar quantidade de pacotes necessário
-        total = (self.size//2048) 
-        if self.dataLen % 2048 != 0:
-            self.total +=1 #Caso a divisão não de exata, um pacote a mais para os bits que sobraram
+        total = ((self.size//2048)+1)
         return (total)
 
     
