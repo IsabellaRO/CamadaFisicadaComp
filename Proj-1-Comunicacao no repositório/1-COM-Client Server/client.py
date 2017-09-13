@@ -18,7 +18,7 @@ import timeit
 serialName = "/dev/ttyACM1"           # Ubuntu (variacao de)
 #serialName = "/dev/tty.usbmodem1411" # Mac    (variacao de)
 #serialName = "COM3"                  # Windows(variacao de)
-#serialName = "COM3"
+
 
 def main():
     # Inicializa enlace
@@ -43,6 +43,7 @@ def main():
         print("-------------------------")
         txBuffer = open(imageR, 'rb').read()
         txLen    = (len(txBuffer))
+        total= com.numberofPackets(txLen)
         print(txLen)
 
         # Transmite imagem

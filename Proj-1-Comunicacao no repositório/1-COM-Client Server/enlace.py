@@ -131,3 +131,12 @@ class enlace(object):
         else:
             self.sendNack()
             return False
+
+    def numberofPackets(self, size)
+    	#Inicializar quantidade de pacotes necessário
+        total = (self.size//2048) 
+        if self.dataLen % 2048 != 0:
+            self.total +=1 #Caso a divisão não de exata, um pacote a mais para os bits que sobraram
+        return (total)
+
+    
