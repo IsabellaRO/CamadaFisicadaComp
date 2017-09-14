@@ -135,9 +135,9 @@ class enlace(object):
             self.sendNack()
             return False
 
-    def numberofPackets(self, size):
+    def numberofPackets(self,dataLen):
     	#Inicializar quantidade de pacotes necessário
-        total = ((self.size//max_bits)+1)
+        total = ((self.dataLen//max_bits)+1)
         return (total)
 
     

@@ -10,7 +10,7 @@ def desempacota(package):
     print(type_package)
     number_of_packages = int(binascii.hexlify(package[4:6]), 16) 
     package_index = int(binascii.hexlify(package[6:7]), 8) 
-    max_bits = int(binascii.hexlify(package[8:9]), 8)
+    max_bits = int(binascii.hexlify(package[7:8]), 16)
     if type_package == b'\x00':
         type_package = "data"
     elif type_package == b'\x10':
@@ -38,7 +38,7 @@ class Empacota(object):
         elif datatype == "NACK":
             self.dataType = 0x12
         
-        self.max_bits = 2048
+        self.max_bits = 0X800
 
         self.data = data
         if self.data == None:
@@ -51,7 +51,7 @@ class Empacota(object):
         self.headSTART = 0xFF
         self.package_index = package_index
         self.number_of_packages = number_of_packages
-        self.headStruct = Struct("start" / Int8ub, "size"  / Int16ub, "type" / Int8ub, "number_of_packages" / Int16ub, "package_index" / Int8ub, "max_bits" / Int8ub )
+        self.headStruct = Struct("start" / Int8ub, "size"  / Int16ub, "type" / Int8ub, "number_of_packages" / Int16ub, "package_index" / Int8ub, "max_bits" / Int16ub )
         self.eopSTART = bytearray([0xFF, 0xFC, 0xF4, 0xF7])
 
     def buildHead(self):
