@@ -10,12 +10,13 @@
 from enlace import *
 import time
 import timeit
+from empacota import *
 
 # Serial Com Port
 #   para saber a sua porta, execute no terminal :
 #   python -m serial.tools.list_ports
 
-serialName = "/dev/ttyACM1"           # Ubuntu (variacao de)
+serialName = "/dev/ttyACM3"           # Ubuntu (variacao de)
 #serialName = "/dev/tty.usbmodem1411" # Mac    (variacao de)
 #serialName = "COM3"                  # Windows(variacao de)
 
@@ -43,11 +44,13 @@ def main():
         print("-------------------------")
         txBuffer = open(imageR, 'rb').read()
         txLen    = (len(txBuffer))
-        total= com.numberofPackets(txLen)
+        #total= Empacota(data).numberofPackets()
+        #print(total,"total")
         print(txLen)
 
         # Transmite imagem
         print("Transmitindo .... {} bytes".format(txLen))
+        
         inicio = time.time()
         com.sendData(txBuffer)
 

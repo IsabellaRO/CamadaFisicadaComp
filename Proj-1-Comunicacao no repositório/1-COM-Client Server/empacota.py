@@ -54,6 +54,11 @@ class Empacota(object):
         self.headStruct = Struct("start" / Int8ub, "size"  / Int16ub, "type" / Int8ub, "number_of_packages" / Int16ub, "package_index" / Int8ub, "max_bits" / Int16ub )
         self.eopSTART = bytearray([0xFF, 0xFC, 0xF4, 0xF7])
 
+    def numberofPackets(self):
+    	#Inicializar quantidade de pacotes necessario
+        total = ((len(self.data)//self.max_bits)+1)
+        return (total)
+
     def buildHead(self):
         #Constroi e retorna Head de acordo com as infos inicializadas
         head = self.headStruct.build(dict(start = self.headSTART, size = self.dataLen, type = self.dataType, number_of_packages = self.number_of_packages, package_index = self.package_index, max_bits = self.max_bits))
@@ -63,7 +68,6 @@ class Empacota(object):
         package = self.buildHead()
         package += self.data
         package += self.eopSTART#()
-        print(package)
         return package
 
 #elements=[10,5,0,5,10,10,5,0]

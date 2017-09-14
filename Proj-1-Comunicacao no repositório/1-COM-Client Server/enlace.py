@@ -66,7 +66,6 @@ class enlace(object):
 
         package = self.rx.getHeadPayload()
         data = desempacota(package)
-        print(data)
 
         return(data[0], data[1],(len(data[0])), data[2])
 
@@ -92,7 +91,7 @@ class enlace(object):
             print("Loop waitconnection")
             response = self.getData()
             print("Waiting sync...")
-            print("response", response)
+            #print("response", response)
             if response[3] == "sync":
                 print("Sync received")
                 self.sendSync()
@@ -104,6 +103,9 @@ class enlace(object):
                     print("Ready to receive package")
                     return True
             else:
+                print("falhou")
+                time.sleep(1)
+                self.sendNack()
                 return False
 
         
@@ -121,6 +123,8 @@ class enlace(object):
                     time.sleep(0.5)
                     self.sendAck()
                     return True
+                elif response[3] == "NACK":
+                    return False
             else:
                 return False                    
 
@@ -135,9 +139,5 @@ class enlace(object):
             self.sendNack()
             return False
 
-    def numberofPackets(self,dataLen):
-    	#Inicializar quantidade de pacotes necessário
-        total = ((self.dataLen//max_bits)+1)
-        return (total)
 
     
