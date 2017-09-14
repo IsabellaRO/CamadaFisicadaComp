@@ -90,6 +90,7 @@ class enlace(object):
             print("Loop waitconnection")
             response = self.getData()
             print("Waiting sync...")
+            print("response", response)
             if response[3] == "sync":
                 print("Sync received")
                 self.sendSync()
@@ -134,7 +135,7 @@ class enlace(object):
 
     def numberofPackets(self, size)
     	#Inicializar quantidade de pacotes necessário
-        total = ((self.size//2048)+1)
+        total = ((self.size//max_bits)+1)
         return (total)
 
     

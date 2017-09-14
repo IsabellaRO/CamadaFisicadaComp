@@ -10,7 +10,7 @@ def desempacota(package):
     print(type_package)
     number_of_packages = int(binascii.hexlify(package[4:6]), 16) 
     package_index = int(binascii.hexlify(package[6:7]), 8) 
-
+    max_bits = int(binascii.hexlify(package[8:9]), 8)
     if type_package == b'\x00':
         type_package = "data"
     elif type_package == b'\x10':
@@ -19,8 +19,8 @@ def desempacota(package):
         type_package = "ACK"
     elif type_package == b'\x12':
         type_package = "NACK"
-    payload=package[7:]
-    return (payload, size, type_package, number_of_packages, package_index)
+    payload=package[8:]
+    return (payload, size, type_package, number_of_packages, package_index, max_bits)
 
 
 # Class
@@ -38,6 +38,8 @@ class Empacota(object):
         elif datatype == "NACK":
             self.dataType = 0x12
         
+        self.max_bits = 2048
+
         self.data = data
         if self.data == None:
             self.dataLen = 0
@@ -49,17 +51,13 @@ class Empacota(object):
         self.headSTART = 0xFF
         self.package_index = package_index
         self.number_of_packages = number_of_packages
-        self.headStruct = Struct("start" / Int8ub, "size"  / Int16ub, "type" / Int8ub, "number_of_packages" / Int16ub, "package_index" / Int8ub )
+        self.headStruct = Struct("start" / Int8ub, "size"  / Int16ub, "type" / Int8ub, "number_of_packages" / Int16ub, "package_index" / Int8ub, "max_bits" / Int8ub )
         self.eopSTART = bytearray([0xFF, 0xFC, 0xF4, 0xF7])
 
     def buildHead(self):
         #Constroi e retorna Head de acordo com as infos inicializadas
-        head = self.headStruct.build(dict(start = self.headSTART, size = self.dataLen, type = self.dataType, number_of_packages = self.number_of_packages, package_index = self.package_index))
+        head = self.headStruct.build(dict(start = self.headSTART, size = self.dataLen, type = self.dataType, number_of_packages = self.number_of_packages, package_index = self.package_index, max_bits = self.max_bits))
         return (head)
-
-#    def buildEOP(self):
-#        eop = self.eopStruct.build(dict(start = self.eopSTART))
-#        return eop
 
     def buildPackage(self):
         package = self.buildHead()
