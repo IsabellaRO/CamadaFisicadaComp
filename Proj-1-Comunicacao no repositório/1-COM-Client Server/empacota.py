@@ -63,6 +63,7 @@ class Empacota(object):
         package = self.buildHead()
         package += self.data
         package += self.eopSTART#()
+        print(package)
         return package
 
 #elements=[10,5,0,5,10,10,5,0]

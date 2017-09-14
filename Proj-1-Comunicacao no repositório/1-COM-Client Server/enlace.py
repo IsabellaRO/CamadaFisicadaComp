@@ -56,31 +56,33 @@ class enlace(object):
     def sendData(self, data):
         """ Send data over the enlace interface
         """
-        package = Empacota(data, "data").buildPackage()
+        package = Empacota(data, "data",1,1).buildPackage()
         self.tx.sendBuffer(package)
 
     def getData(self):
         """ Get n data over the enlace interface
         Return the byte array and the size of the buffer
         """
+
         package = self.rx.getHeadPayload()
         data = desempacota(package)
+        print(data)
 
         return(data[0], data[1],(len(data[0])), data[2])
 
     def sendAck(self):
         #Envia os ACKs para autorizar inicio da conexão ou confirmar recebimentoss
-        package = Empacota(None, "ACK").buildPackage()
+        package = Empacota(None, "ACK",1,1).buildPackage()
         self.tx.sendBuffer(package)
 
     def sendNack(self):
         #Avisa que pacote chegou corrompido
-        package = Empacota(None, "NACK").buildPackage()
+        package = Empacota(None, "NACK",1,1).buildPackage()
         self.tx.sendBuffer(package)
 
     def sendSync(self):
         #Para estabelecer conexão
-        package = Empacota(None, "sync").buildPackage()
+        package = Empacota(None, "sync",1,1).buildPackage()
         self.tx.sendBuffer(package)
 
     def waitConnection(self): #Papel do Server
@@ -133,7 +135,7 @@ class enlace(object):
             self.sendNack()
             return False
 
-    def numberofPackets(self, size)
+    def numberofPackets(self, size):
     	#Inicializar quantidade de pacotes necessário
         total = ((self.size//max_bits)+1)
         return (total)
