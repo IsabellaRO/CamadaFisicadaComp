@@ -102,6 +102,11 @@ class enlace(object):
                 if response[3] == "ACK":
                     print("Ready to receive package")
                     return True
+                else:
+                    print("falhou")
+                    time.sleep(1)
+                    self.sendNack()
+                    return False
             else:
                 print("falhou")
                 time.sleep(1)
